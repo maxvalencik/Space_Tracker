@@ -1,0 +1,16 @@
+{% block content %}
+
+{% if response%}
+<p class="titleNews">NASA Picture of the Day!</p>
+<img class="NASA" src="{{response.hdurl}}" />
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% endblock %}

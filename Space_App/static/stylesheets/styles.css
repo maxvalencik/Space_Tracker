@@ -1,0 +1,72 @@
+/*******************************************
+/* id styles */
+
+#menu {
+    display: flex;
+    flex-direction: row;
+}
+
+
+/*******************************************
+/*class styles */
+
+.home {
+    padding-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titleNews {
+    font-weight: bold;
+}
+
+.imgNews {
+    height: 100px;
+    width: auto;
+}
+
+.dateNews {
+    font-style: italic;
+}
+
+.NASA {
+    width: auto;
+    height: 50px;
+}
+
+
+/*******************************************
+/* elements styles */
+
+html {
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+nav {
+    border-bottom: solid;
+}
+
+nav ul {
+    width: 100% !important;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+ul li {
+    padding: 1%;
+}
+
+li a {
+    padding-right: 5px;
+}
+
+a img {
+    height: 100px;
+}

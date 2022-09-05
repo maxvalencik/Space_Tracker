@@ -36,6 +36,7 @@ __***_Title: Space Tracker_***__
 	*a.	What does your database schema look like?*
 	
 	There will be the following databases:
+
 	
 	-	**USERS**
 	

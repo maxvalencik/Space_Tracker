@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% if response%}
+<ul>
+    {% for news in response%}
+    <li>
+        <p class="titleNews">{{news.title}}</p>
+
+        <a href="{{news.url}}">
+            <img class="imgNews" src="{{news.imageUrl}}" />
+        </a>
+        <p>{{news.summary}}</p>
+        <p class="dateNews">Updated: {{news.updatedAt}}</p>
+    </li>
+    {% endfor%}
+</ul>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% endblock %}
