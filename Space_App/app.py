@@ -9,7 +9,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from forms import UserAddForm
+from forms import UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Role
 from secret import secretNASA
 
@@ -168,7 +168,7 @@ def signup():
             flash("Username already taken", 'danger')
             return render_template('signup.html', form=form)
 
-        flash('Welcome back %s' % user.username)
+        flash('Welcome %s' % user.username)
         db.session.commit()
         do_login(user)
 
@@ -178,25 +178,27 @@ def signup():
         return render_template('signup.html', form=form)
 
 
-# # Login Route
-# @app.route('/login', methods=["GET", "POST"])
-# def login():
-#     """Handle user login."""
+##############################################################################
+# Login Route
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    """Handle user login."""
 
-#     form = LoginForm()
+    clear_flash()
+    form = LoginForm()
 
-#     if form.validate_on_submit():
-#         user = User.authenticate(form.username.data,
-#                                  form.password.data)
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data,
+                                 form.password.data)
 
-#         if user:
-#             do_login(user)
-#             flash(f"Hello, {user.username}!", "success")
-#             return redirect("/")
+        if user:
+            do_login(user)
+            flash("Welcome back %s" % user.username)
+            return redirect("/")
 
-#         flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.", 'danger')
 
-#     return render_template('users/login.html', form=form)
+    return render_template('login.html', form=form)
 
 
 ##############################################################################
@@ -215,3 +217,38 @@ def logout():
     do_logout()
 
     return redirect("/")
+
+
+##############################################################################
+# Profile Route
+@app.route('/users/profile', methods=["GET", "POST"])
+def profile():
+    """Update profile for current user."""
+
+    clear_flash()
+
+    if not g.user:
+        flash("You need to login to get there!", "danger")
+        return redirect("/")
+
+    # get the current user using g.
+    user = g.user
+
+    # Pre-Fill the form with user data
+    form = UserEditForm(obj=user)
+
+    if form.validate_on_submit():
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data,
+            user.name = form.name.data or None,
+            user.location = form.location.data or None,
+            user.email = form.email.data,
+            user.password = form.password.data,
+            user.role_id = form.role.data,
+
+            db.session.commit()
+            return redirect("/")
+
+        flash("Wrong data! Try again!", 'danger')
+
+    return render_template('edit.html', form=form, user_id=user.id)

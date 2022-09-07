@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p class="alert alert-danger">{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="row justify-content-md-center divCustom2">
+    <div class="col-md-7 col-lg-5">
+        <h3 class="titleCustom">Welcome Back to Space Tracker!</h3>
+        <form method="POST" id="user_form">
+            {{ form.hidden_tag() }}
+            <!--add type=hidden form fields -->
+
+            {% for field in form
+            if field.widget.input_type != 'hidden' %}
+
+            <p>
+                {{ field.label }}
+                {{ field }}
+
+                {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </p>
+
+            {% endfor %}
+
+            <button class="btn btn-primary btn-sm btn-block">Launch!</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
