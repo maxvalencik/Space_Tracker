@@ -10,29 +10,41 @@
 /*******************************************
 /*class styles */
 
-.home {
-    padding-top: 1em;
+.divCustom {
+    padding: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.titleNews {
+.divCustom2 {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.divCustomLaunch {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.titleCustom {
     font-weight: bold;
 }
 
-.imgNews {
+.imgCustom {
     height: 100px;
     width: auto;
 }
 
-.dateNews {
+.dateCustom {
     font-style: italic;
 }
 
 .NASA {
-    width: auto;
-    height: 50px;
+    height: 25em;
+    border: solid;
 }
 
 

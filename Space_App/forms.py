@@ -6,13 +6,15 @@ from wtforms.validators import DataRequired, Email, Length
 class UserAddForm(FlaskForm):
     """Form for adding users."""
 
-    username = StringField('Username 🆔', validators=[DataRequired()])
-    name = StringField('(Optional) Name ⌥')
-    email = StringField('E-mail 📧', validators=[DataRequired(), Email()])
-    location = StringField('(Optional) Location 🏠')
+    username = StringField('Username', validators=[DataRequired()])
+    name = StringField('(Optional) Name')
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    location = StringField('(Optional) Location')
     password = PasswordField('Password', validators=[Length(min=6)])
-    role = SelectField(
-        'Role', choices=['1- Spaceport', '2- Launcher', '3- Enthusiast'])
+    role = SelectField('Role',
+                       choices=[(1, 'Spaceport'), (2, 'Launcher'),
+                                (3, 'Enthusiast')],
+                       coerce=int)
 
 
 class LoginForm(FlaskForm):

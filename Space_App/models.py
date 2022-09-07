@@ -41,11 +41,6 @@ class User(db.Model):
         nullable=True,
     )
 
-    description = db.Column(
-        db.Text,
-        nullable=True,
-    )
-
     password = db.Column(
         db.Text,
         nullable=False,
@@ -53,9 +48,12 @@ class User(db.Model):
 
     role_id = db.Column(
         db.Integer,
-        db.ForeignKey('role.id'),
+        db.ForeignKey('roles.id',
+                      ondelete='CASCADE', onupdate='CASCADE'),
         nullable=False,
     )
+
+    roles = db.relationship('Role', backref='users')
 
     # followers = db.relationship(
     #     "User",
@@ -95,7 +93,7 @@ class User(db.Model):
     #     return len(found_user_list) == 1
 
     @classmethod
-    def signup(cls, name, email, username, location, description, password):
+    def signup(cls, username, name, location, email, password, role_id):
         """This is a class method (call it on the class, not an individual user.)
         Sign up user. Hashes password and adds user to system."""
 
@@ -113,12 +111,12 @@ class User(db.Model):
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
         user = User(
-            name=name or None,
             username=username,
-            email=email,
+            name=name or None,
             location=location or None,
-            description=description or None,
+            email=email,
             password=hashed_pwd,
+            role_id=role_id,
         )
 
         db.session.add(user)
@@ -165,15 +163,6 @@ class Role(db.Model):
         db.Text,
         nullable=True,
     )
-
-    us_id = db.Column(
-        db.Integer,
-        db.ForeignKey('user.id'),
-        nullable=False,
-    )
-
-    # One-to-many relationship with users
-    users = db.relationship('User', backref='role')
 
 
 ###############################################

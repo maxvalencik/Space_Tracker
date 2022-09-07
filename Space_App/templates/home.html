@@ -2,9 +2,17 @@
 
 {% block content %}
 
-<div class="home">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p class="alert alert-success">{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="divCustom">
     <h1>WELCOME!</h1>
-    <p>Have fun using the Space Tracker...Check out our menu!</p>
+    <p>Have fun using the Space Tracker ... Check out our menu!</p>
 </div>
 
 {% endblock %}

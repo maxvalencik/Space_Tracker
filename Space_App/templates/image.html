@@ -1,8 +1,14 @@
+{% extends 'index.html' %}
 {% block content %}
 
-{% if response%}
-<p class="titleNews">NASA Picture of the Day!</p>
-<img class="NASA" src="{{response.hdurl}}" />
+{% if response %}
+<div class="divCustom">
+    <p class="titleCustom">NASA Picture of the Day!</p>
+    <img class="NASA" src="{{response.hdurl}}" />
+    <p class="customDate">{{response.date}}</p>
+    <p>{{response.title}}</p>
+    <p>Credit: NASA</p>
+</div>
 {% endif %}
 
 {% with messages = get_flashed_messages() %}

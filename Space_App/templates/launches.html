@@ -3,14 +3,22 @@
 {% block content %}
 
 {% if response%}
-<ul>
-    {% for launches in response.result %}
-    <li>
-        <p class="titleNews">{{launches.name}}</p>
-
-    </li>
-    {% endfor%}
-</ul>
+<div class="divCustom titleCustom">
+    Next 5 Launches!
+</div>
+<div class="divCustom2">
+    <ul class="list-group">
+        {% for launches in response.result %}
+        <li class="list-group-item">
+            <p class="titleCustom">{{launches.name}}</p>
+            <p><i>Launcher</i> - {{launches.provider.name}}</p>
+            <p><i>Launch Vehicle</i> - {{launches.vehicle.name}}</p>
+            <p><i>Spaceport</i> - {{launches.pad.location.name}}</p>
+            <p><i>Launch Window Opens</i> - {{launches.win_open}}</p>
+        </li>
+        {% endfor%}
+    </ul>
+</div>
 {% endif %}
 
 {% with messages = get_flashed_messages() %}
