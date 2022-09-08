@@ -2,20 +2,32 @@
 
 {% block content %}
 
-<div class="row justify-content-md-center">
-    <div class="col-md-4">
-        <h2 class="join-message">Edit Your Profile.</h2>
-        <form method="POST" id="user_form">
-            {{ form.hidden_tag() }}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p class="alert alert-danger">{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-            {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
-            {% for error in field.errors %}
-            <span class="text-danger">{{ error }}</span>
-            {% endfor %}
-            {{ field(placeholder=field.label.text, class="form-control") }}
-            {% endfor %}
+<div class="divCustom titleCustom">Edit profile for {{form.username.data}} ... or <a href="/users/delete"
+        class="btn btn-danger btn-sm">delete this user!</a></div>
 
+<div class="divCustom2">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
+        {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <p>{{ field.label }}
+            {{ field }}
+        </p>
+        {% endfor %}
+        <div class="divCustom">
             <p>To confirm changes, enter your password:</p>
+
             {% if form.password.errors %}
             {% for error in form.password.errors %}
             <span class="text-danger">
@@ -23,14 +35,18 @@
             </span>
             {% endfor %}
             {% endif %}
-            {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+
+            <p>
+                {{ form.password(placeholder="Password", class="form-control") }}
+            </p>
 
             <div class="edit-btn-area">
-                <button class="btn btn-success">Edit this user!</button>
-                <a href="/" class="btn btn-outline-secondary">Cancel</a>
+                <button class="btn btn-success btn-sm">Edit this user!</button>
+                <a href="/" class="btn btn-outline-secondary btn-sm">Cancel</a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
+
 
 {% endblock %}

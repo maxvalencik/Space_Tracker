@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p class="alert alert-danger">{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="divCustom titleCustom">Do you want to delete profile for {{user.username}} ?</div>
+<div class="divCustom2">
+    <ul class="list-group">
+        <li class="list-group-item"><i>Username: </i>{{user.username}}</li>
+        {% if user.name %}
+        <li class="list-group-item"><i>Name: </i>{{user.name}}</li>
+        {% else %}
+        <li class="list-group-item"><i>Name: </i>Not provided...</li>
+        {% endif%}
+        <li class="list-group-item"><i>Email: </i>{{user.email}}</li>
+        {% if user.location %}
+        <li class="list-group-item"><i>Location: </i>{{user.location}}</li>
+        {% else %}
+        <li class="list-group-item"><i>Location: </i>Not provided...</li>
+        {% endif %}
+        {%if user.role_id == 1 %}
+        <li class="list-group-item"><i>Role: </i>Spaceport</li>
+        {% elif user.role_id == 2 %}
+        <li class="list-group-item"><i>Role: </i>Launcher</li>
+        {% else %}
+        <li class="list-group-item"><i>Role: </i>Enthusiast</li>
+        {% endif %}
+    </ul>
+
+    <div class="divCustom">
+        <form method="POST">
+            <p>To confirm deletion, enter your information:</p>
+
+            {{ form.hidden_tag() }}
+            <!--add type=hidden form fields -->
+
+            {% for field in form
+            if field.widget.input_type != 'hidden' %}
+
+            <p>
+                {{ field(placeholder=label) }}
+
+                {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </p>
+
+            {% endfor %}
+
+            <div class="edit-btn-area">
+                <button class="btn btn-danger btn-sm" type="submit">Delete this user!</button>
+                <a href="/" class="btn btn-outline-secondary btn-sm">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+
+
+{% endblock %}

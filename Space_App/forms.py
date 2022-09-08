@@ -36,3 +36,10 @@ class UserEditForm(FlaskForm):
                        choices=[(1, 'Spaceport'), (2, 'Launcher'),
                                 (3, 'Enthusiast')],
                        coerce=int)
+
+
+class UserDeleteForm(FlaskForm):
+    """Form to delete user"""
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[Length(min=6)])

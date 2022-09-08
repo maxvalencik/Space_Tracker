@@ -9,7 +9,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from forms import UserAddForm, LoginForm, UserEditForm
+from forms import UserAddForm, LoginForm, UserEditForm, UserDeleteForm
 from models import db, connect_db, User, Role
 from secret import secretNASA
 
@@ -220,9 +220,9 @@ def logout():
 
 
 ##############################################################################
-# Profile Route
-@app.route('/users/profile', methods=["GET", "POST"])
-def profile():
+# Edit Profile Route
+@app.route('/users/edit', methods=["GET", "POST"])
+def edit():
     """Update profile for current user."""
 
     clear_flash()
@@ -243,12 +243,57 @@ def profile():
             user.name = form.name.data or None,
             user.location = form.location.data or None,
             user.email = form.email.data,
-            user.password = form.password.data,
             user.role_id = form.role.data,
 
             db.session.commit()
             return redirect("/")
 
-        flash("Wrong data! Try again!", 'danger')
+        flash("Wrong Password! Try again!", 'danger')
 
-    return render_template('edit.html', form=form, user_id=user.id)
+    return render_template('edit.html', form=form)
+
+
+##############################################################################
+# Delete User Route
+@app.route('/users/delete', methods=["GET", "POST"])
+def delete_user():
+    """Delete current user."""
+
+    clear_flash()
+
+    # get the current user using g.
+    user = g.user
+
+    # Fill the form with current user data
+    form = UserDeleteForm()
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    if form.validate_on_submit():
+
+        if User.authenticate(form.username.data, form.password.data):
+
+            do_logout()
+            db.session.delete(g.user)
+            db.session.commit()
+
+            return redirect("/signup")
+
+        flash("Wrong combination of Username and Password! Try again!", 'danger')
+
+    return render_template('delete.html', form=form, user=user)
+
+
+##############################################################################
+# Show user profile
+@app.route('/users/<int:user_id>')
+def users_show(user_id):
+    """Show user profile."""
+
+    user = User.query.get_or_404(user_id)
+
+    # Add satellite/spaceport followed...
+
+    return render_template('profile.html', user=user)

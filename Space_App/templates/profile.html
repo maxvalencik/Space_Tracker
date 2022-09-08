@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="divCustom titleCustom">{{user.username}}'s Profile!</div>
+<div class="divCustom2">
+    <ul class="list-group">
+        <li class="list-group-item"><i>Username: </i>{{user.username}}</li>
+        {% if user.name %}
+        <li class="list-group-item"><i>Name: </i>{{user.name}}</li>
+        {% else %}
+        <li class="list-group-item"><i>Name: </i>Not provided...</li>
+        {% endif%}
+        {% if user.location %}
+        <li class="list-group-item"><i>Location: </i>{{user.location}}</li>
+        {% else %}
+        <li class="list-group-item"><i>Location: </i>Not provided...</li>
+        {% endif %}
+        {%if user.role_id == 1 %}
+        <li class="list-group-item"><i>Role: </i>Spaceport</li>
+        {% elif user.role_id == 2 %}
+        <li class="list-group-item"><i>Role: </i>Launcher</li>
+        {% else %}
+        <li class="list-group-item"><i>Role: </i>Enthusiast</li>
+        {% endif %}
+    </ul>
+</div>
+</div>
+
+<div class="divCustom titleCustom">Interests:</div>
+<div class="divCustom2"></div>
+
+{%endblock%}
